@@ -1,0 +1,36 @@
+# Dependencies
+node_modules/
+
+# Production builds and tool caches
+dist/
+dist-ssr/
+.vite/
+coverage/
+*.tsbuildinfo
+.eslintcache
+
+# Local environment files and secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# Package-manager logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDE and editor metadata
+.vscode/
+.idea/
+.cursor/
+.codex/
+*.swp
+*.swo
+*~
+
+# Operating-system files
+.DS_Store
+Thumbs.db
+Desktop.ini

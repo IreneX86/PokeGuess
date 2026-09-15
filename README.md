@@ -14,6 +14,8 @@ PokéGuess is a bilingual Pokémon deduction game built with React, TypeScript, 
 - Win-streak tracking during the current browser session
 - Responsive comparison cards for desktop and mobile
 - In-memory detail caching and a persistent bilingual search index
+- A bilingual National Pokédex drawer with combined search, generation, type, and special filters
+- Lazy-loaded Pokémon details with an explicit “Use as Guess” action
 
 ## Getting started
 
@@ -43,6 +45,7 @@ npm run preview    # Preview the production build
 ```text
 src/
 ├── components/          Reusable React UI components
+│   └── pokedex/         Pokédex drawer, filters, grid, cards, and details
 ├── game/                Deterministic comparison engine
 ├── services/            PokéAPI fetching, normalization, and caching
 ├── types/               Shared normalized TypeScript models

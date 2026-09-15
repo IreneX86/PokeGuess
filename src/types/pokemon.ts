@@ -15,6 +15,7 @@ export type PokemonStats = Record<StatKey, number>
 
 export interface PokemonAbility { id: string; names: LocalizedText; isHidden: boolean }
 export interface PokemonEvolution { stage: number; canEvolve: boolean; hasPreEvolution: boolean }
+export interface PokemonDescription { en: string | null; zh: string | null; zhUsesEnglishFallback: boolean }
 
 export interface PokemonGameData {
   id: number
@@ -36,6 +37,7 @@ export interface PokemonGameData {
   color: string
   shape: string | null
   habitat: string | null
+  description: PokemonDescription
 }
 
 export type ComparisonDirection = 'exact' | 'higher' | 'lower'

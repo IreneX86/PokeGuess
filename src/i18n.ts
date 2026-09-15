@@ -16,6 +16,15 @@ export const ui = {
     yes: 'Yes', no: 'No', mysterySolved: 'Mystery solved!', roundOver: 'Round over', found: 'You found', answerWas: 'The answer was',
     guess: 'guess', guessesWord: 'guesses', playAgain: 'Play Again', data: "Data from PokéAPI · Gotta guess 'em all!",
     exactLabel: 'Exact match', secretHigher: 'The secret Pokémon has a higher value', secretLower: 'The secret Pokémon has a lower value',
+    openPokedex: 'Pokédex', closePokedex: 'Close Pokédex', pokedexTitle: 'National Pokédex',
+    pokedexSubtitle: 'Browse and filter all Pokémon', pokedexSearch: 'Search Pokémon or number...',
+    filters: 'Filters', all: 'All', special: 'Special', singleType: 'Single Type', dualType: 'Dual Type',
+    resetFilters: 'Reset filters', pokemonFound: 'Pokémon found', loadingPokedex: 'Loading Pokédex...',
+    pokedexError: 'Failed to load Pokédex. Please try again.', pokedexEmpty: 'No Pokémon match these filters.',
+    backToPokedex: 'Back to Pokédex', useAsGuess: 'Use as Guess', detailLoading: 'Loading Pokémon details...',
+    detailError: 'Failed to load Pokémon details.', unavailableDuringRoundEnd: 'Start a new round to use this Pokémon as a guess.',
+    alreadyGuessed: 'This Pokémon has already been guessed this round.',
+    description: 'Description', descriptionEnglishFallback: 'Official Chinese text is unavailable; showing the English entry.', unknown: 'Unknown',
   },
   zh: {
     tagline: '猜猜我是谁？', language: 'English', newPokemon: '新的宝可梦正在等待', title: '猜出神秘宝可梦！',
@@ -32,6 +41,14 @@ export const ui = {
     yes: '是', no: '否', mysterySolved: '猜对了！', roundOver: '本轮结束', found: '你找到了', answerWas: '正确答案是',
     guess: '次猜测', guessesWord: '次猜测', playAgain: '再来一局', data: '数据来源：PokéAPI · 全部猜出来吧！',
     exactLabel: '完全匹配', secretHigher: '神秘宝可梦的数值更高', secretLower: '神秘宝可梦的数值更低',
+    openPokedex: '全国图鉴', closePokedex: '关闭全国图鉴', pokedexTitle: '全国图鉴', pokedexSubtitle: '浏览并筛选所有宝可梦',
+    pokedexSearch: '搜索宝可梦、编号……', filters: '筛选', all: '全部', special: '特殊', singleType: '单属性', dualType: '双属性',
+    resetFilters: '重置筛选', pokemonFound: '只宝可梦', loadingPokedex: '正在加载全国图鉴……',
+    pokedexError: '图鉴加载失败，请重试。', pokedexEmpty: '没有符合当前筛选条件的宝可梦。',
+    backToPokedex: '返回图鉴', useAsGuess: '用它猜测', detailLoading: '正在加载宝可梦详情……', detailError: '宝可梦详情加载失败。',
+    unavailableDuringRoundEnd: '开始新一局后才能用它猜测。',
+    alreadyGuessed: '本轮已经猜过这只宝可梦。',
+    description: '官方描述', descriptionEnglishFallback: '暂无官方中文描述，以下显示英文原文。', unknown: '未知',
   },
 } as const
 
@@ -45,10 +62,10 @@ const typeNames: Record<string, LocalizedText> = {
 }
 
 const categoryNames: Record<string, LocalizedText> = {
-  red: { en: 'Red', zh: '红色' }, blue: { en: 'Blue', zh: '蓝色' }, yellow: { en: 'Yellow', zh: '黄色' }, green: { en: 'Green', zh: '绿色' }, black: { en: 'Black', zh: '黑色' }, brown: { en: 'Brown', zh: '褐色' },
+  red: { en: 'Red', zh: '红色' }, blue: { en: 'Blue', zh: '蓝色' }, yellow: { en: 'Yellow', zh: '黄色' }, green: { en: 'Green', zh: '绿色' }, black: { en: 'Black', zh: '黑色' }, brown: { en: 'Brown', zh: '棕色' },
   purple: { en: 'Purple', zh: '紫色' }, gray: { en: 'Gray', zh: '灰色' }, white: { en: 'White', zh: '白色' }, pink: { en: 'Pink', zh: '粉色' }, cave: { en: 'Cave', zh: '洞穴' }, forest: { en: 'Forest', zh: '森林' },
-  grassland: { en: 'Grassland', zh: '草原' }, mountain: { en: 'Mountain', zh: '山地' }, rare: { en: 'Rare', zh: '稀有地点' }, sea: { en: 'Sea', zh: '海洋' }, roughTerrain: { en: 'Rough terrain', zh: '崎岖地形' },
-  urban: { en: 'Urban', zh: '城市' }, watersEdge: { en: "Water's edge", zh: '水边' },
+  grassland: { en: 'Grassland', zh: '草原' }, mountain: { en: 'Mountain', zh: '山地' }, rare: { en: 'Rare', zh: '稀有地区' }, sea: { en: 'Sea', zh: '海洋' }, roughTerrain: { en: 'Rough Terrain', zh: '崎岖地形' },
+  urban: { en: 'Urban', zh: '城市' }, watersEdge: { en: 'Waterside', zh: '水边' },
   ball: { en: 'Ball', zh: '球形' }, squiggle: { en: 'Squiggle', zh: '蛇形' }, fish: { en: 'Fish', zh: '鱼形' }, arms: { en: 'Armed', zh: '有手臂' },
   blob: { en: 'Blob', zh: '团块状' }, upright: { en: 'Upright', zh: '直立形' }, legs: { en: 'Legged', zh: '多足形' }, quadruped: { en: 'Quadruped', zh: '四足形' },
   wings: { en: 'Winged', zh: '有翅膀' }, tentacles: { en: 'Tentacled', zh: '有触手' }, heads: { en: 'Multiple heads', zh: '多头形' }, humanoid: { en: 'Humanoid', zh: '人形' },

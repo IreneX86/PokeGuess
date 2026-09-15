@@ -1,11 +1,12 @@
 import type { Language } from '../types/pokemon'
 import type { Messages } from '../i18n'
 
-interface HeaderProps { language: Language; messages: Messages; guesses: number; maxGuesses: number; streak: number; onToggleLanguage: () => void }
+interface HeaderProps { language: Language; messages: Messages; guesses: number; maxGuesses: number; streak: number; onToggleLanguage: () => void; onOpenPokedex: () => void }
 
-export function Header({ language, messages, guesses, maxGuesses, streak, onToggleLanguage }: HeaderProps) {
+export function Header({ language, messages, guesses, maxGuesses, streak, onToggleLanguage, onOpenPokedex }: HeaderProps) {
   return (
     <header className="hero">
+      <button className="pokedex-open" onClick={onOpenPokedex}>📖 {messages.openPokedex}</button>
       <button className="language-toggle" onClick={onToggleLanguage} aria-label={language === 'en' ? '切换到中文' : 'Switch to English'}>
         <span className={language === 'zh' ? 'active' : ''}>中文</span><i />
         <span className={language === 'en' ? 'active' : ''}>English</span>

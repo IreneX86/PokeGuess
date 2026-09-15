@@ -3,6 +3,7 @@ import { Header } from './components/Header'
 import { SearchBox } from './components/SearchBox'
 import { ComparisonTable } from './components/ComparisonTable'
 import { VictoryModal } from './components/VictoryModal'
+import { PokedexDrawer } from './components/pokedex/PokedexDrawer'
 import { getPokemon, getPokemonList } from './services/pokeApi'
 import { comparePokemon } from './game/comparePokemon'
 import { ui } from './i18n'
@@ -20,6 +21,7 @@ function App() {
   const [status, setStatus] = useState<GameStatus>('loading')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [pokedexOpen, setPokedexOpen] = useState(false)
   const messages = ui[language]
 
   const startGame = useCallback(async (knownList?: PokemonListItem[]) => {
@@ -62,7 +64,7 @@ function App() {
   return (
     <div className="app-shell">
       <Header language={language} messages={messages} guesses={guesses.length} maxGuesses={MAX_GUESSES} streak={streak}
-        onToggleLanguage={() => setLanguage((current) => current === 'en' ? 'zh' : 'en')} />
+        onToggleLanguage={() => setLanguage((current) => current === 'en' ? 'zh' : 'en')} onOpenPokedex={() => setPokedexOpen(true)} />
       <main>
         <section className="game-intro"><span className="eyebrow">{messages.newPokemon}</span><h1>{messages.title}</h1><p>{messages.instructions}</p>
           <SearchBox pokemon={pokemonList} guessedIds={guessedIds} disabled={status !== 'playing'} isSubmitting={isSubmitting}
@@ -75,6 +77,9 @@ function App() {
       </main>
       <footer><span className="mini-ball" /> {messages.data}</footer>
       {(status === 'won' || status === 'lost') && secret && <VictoryModal pokemon={secret} guesses={guesses.length} won={status === 'won'} language={language} messages={messages} onPlayAgain={() => void startGame(pokemonList)} />}
+      <PokedexDrawer open={pokedexOpen} language={language} messages={messages} canGuess={status === 'playing'} guessedIds={guessedIds}
+        onClose={() => setPokedexOpen(false)} onToggleLanguage={() => setLanguage((current) => current === 'en' ? 'zh' : 'en')}
+        onUseAsGuess={(identifier) => { void makeGuess(identifier) }} />
     </div>
   )
 }

@@ -1,4 +1,6 @@
 import type { LocalizedText, PokemonAbility, PokemonGameData, PokemonListItem, PokemonStats } from '../types/pokemon'
+import { selectOfficialDescriptions } from './flavorText'
+import type { FlavorTextEntry } from './flavorText'
 
 const API_BASE = 'https://pokeapi.co/api/v2'
 const POKEMON_COUNT = 1025
@@ -23,6 +25,7 @@ interface SpeciesResponse {
   name: string; names: LocalizedName[]; generation: NamedResource; evolution_chain: { url: string }
   is_legendary: boolean; is_mythical: boolean; is_baby: boolean
   color: NamedResource; shape: NamedResource | null; habitat: NamedResource | null
+  flavor_text_entries: FlavorTextEntry[]
 }
 interface AbilityResponse { names: LocalizedName[] }
 interface EvolutionNode { species: NamedResource; evolves_to: EvolutionNode[] }
@@ -139,6 +142,7 @@ export async function getPokemon(identifier: string): Promise<PokemonGameData> {
     evolution: evolutionFacts(evolution.chain, species.name) ?? { stage: 1, canEvolve: false, hasPreEvolution: false },
     height: pokemon.height, weight: pokemon.weight, isLegendary: species.is_legendary, isMythical: species.is_mythical, isBaby: species.is_baby,
     color: species.color.name, shape: species.shape?.name ?? null, habitat: species.habitat?.name ?? null,
+    description: selectOfficialDescriptions(species.flavor_text_entries),
   }
   detailCache.set(normalized, result)
   return result

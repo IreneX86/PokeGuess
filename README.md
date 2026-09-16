@@ -1,11 +1,25 @@
 # PokéGuess
 
-PokéGuess is a bilingual Pokémon deduction game built with React, TypeScript, and Vite. Guess the mystery Pokémon and use independently evaluated clues—types, stats, generation, abilities, evolution data, and physical traits—to narrow down the answer.
+PokéGuess is a multilingual Pokémon deduction game built with React, TypeScript, and Vite. Guess the mystery Pokémon and use independently evaluated clues—types, stats, generation, abilities, evolution data, and physical traits—to narrow down the answer.
+
+## Demo
+
+Explore the National Pokédex, submit guesses, and use the comparison feedback to identify the mystery Pokémon in ten attempts.
+
+### Game Interface
+
+![PokéGuess home screen with the Pokémon search field and empty guess history](docs/assets/pokeguess-home.png)
+
+### Gameplay
+
+![PokéGuess gameplay demonstrating Pokémon search, guess submission, and attribute feedback](docs/assets/pokeguess-gameplay.gif)
+
+The gameplay demo shows a Pokémon search and submission followed by the resulting comparison clues.
 
 ## Features
 
-- English and Simplified Chinese interface and search
-- Autocomplete for Pokémon names in either language
+- English, Simplified Chinese, and Japanese interface and search
+- Autocomplete for Pokémon names in English, Simplified Chinese, and Japanese
 - Order-independent type and ability matching
 - Total and individual base-stat direction clues
 - Branching-aware evolution-stage information
@@ -13,8 +27,8 @@ PokéGuess is a bilingual Pokémon deduction game built with React, TypeScript, 
 - Ten guesses per round with answer reveal
 - Win-streak tracking during the current browser session
 - Responsive comparison cards for desktop and mobile
-- In-memory detail caching and a persistent bilingual search index
-- A bilingual National Pokédex drawer with combined search, generation, type, and special filters
+- In-memory detail caching and a persistent multilingual search index
+- A multilingual National Pokédex drawer with combined search, generation, type, and special filters
 - Lazy-loaded Pokémon details with an explicit “Use as Guess” action
 
 ## Getting started
@@ -50,7 +64,7 @@ src/
 ├── services/            PokéAPI fetching, normalization, and caching
 ├── types/               Shared normalized TypeScript models
 ├── App.tsx              Round state and game flow
-├── i18n.ts              English and Chinese presentation strings
+├── i18n.ts              English, Chinese, and Japanese presentation strings
 └── styles.css           Responsive visual system
 ```
 

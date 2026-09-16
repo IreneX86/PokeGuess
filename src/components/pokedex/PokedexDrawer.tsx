@@ -59,7 +59,7 @@ export function PokedexDrawer({ open, language, messages, canGuess, guessedIds, 
         <header className="pokedex-header">
           <div><span className="eyebrow">PokéGuess</span><h2 id="pokedex-title">📖 {messages.pokedexTitle}</h2><p>{messages.pokedexSubtitle}</p></div>
           <div className="drawer-header-actions">
-            <button className="drawer-language" onClick={onToggleLanguage} aria-label={language === 'en' ? '切换到中文' : 'Switch to English'}>{messages.language}</button>
+            <button className="drawer-language" onClick={onToggleLanguage} aria-label={messages.switchLanguage}>{messages.language}</button>
             <button ref={closeButton} className="drawer-close" onClick={onClose} aria-label={messages.closePokedex}>×</button>
           </div>
         </header>

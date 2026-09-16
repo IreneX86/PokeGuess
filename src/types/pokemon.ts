@@ -1,6 +1,6 @@
-export type Language = 'en' | 'zh'
+export type Language = 'en' | 'zh' | 'ja'
 
-export interface LocalizedText { en: string; zh: string }
+export interface LocalizedText { en: string; zh: string; ja: string }
 
 export interface PokemonListItem {
   id: number
@@ -15,7 +15,13 @@ export type PokemonStats = Record<StatKey, number>
 
 export interface PokemonAbility { id: string; names: LocalizedText; isHidden: boolean }
 export interface PokemonEvolution { stage: number; canEvolve: boolean; hasPreEvolution: boolean }
-export interface PokemonDescription { en: string | null; zh: string | null; zhUsesEnglishFallback: boolean }
+export interface PokemonDescription {
+  en: string | null
+  zh: string | null
+  ja: string | null
+  zhUsesEnglishFallback: boolean
+  jaUsesEnglishFallback: boolean
+}
 
 export interface PokemonGameData {
   id: number

@@ -6,7 +6,7 @@ import { VictoryModal } from './components/VictoryModal'
 import { PokedexDrawer } from './components/pokedex/PokedexDrawer'
 import { getPokemon, getPokemonList } from './services/pokeApi'
 import { comparePokemon } from './game/comparePokemon'
-import { ui } from './i18n'
+import { nextLanguage, ui } from './i18n'
 import type { GuessResult, Language, PokemonGameData, PokemonListItem } from './types/pokemon'
 
 const MAX_GUESSES = 10
@@ -23,6 +23,7 @@ function App() {
   const [error, setError] = useState<string | null>(null)
   const [pokedexOpen, setPokedexOpen] = useState(false)
   const messages = ui[language]
+  const toggleLanguage = () => setLanguage((current) => nextLanguage(current))
 
   const startGame = useCallback(async (knownList?: PokemonListItem[]) => {
     setStatus('loading'); setError(null); setGuesses([]); setSecret(null)
@@ -42,9 +43,10 @@ function App() {
   }, [])
 
   useEffect(() => {
-    document.documentElement.lang = language === 'zh' ? 'zh-CN' : 'en'
-    document.title = language === 'zh' ? 'PokéGuess · 猜宝可梦' : 'PokéGuess · Pokémon guessing game'
-  }, [language])
+    document.documentElement.lang = language === 'zh' ? 'zh-CN' : language
+    document.title = messages.documentTitle
+    document.querySelector<HTMLMetaElement>('meta[name="description"]')?.setAttribute('content', messages.metaDescription)
+  }, [language, messages.documentTitle, messages.metaDescription])
 
   const guessedIds = useMemo(() => new Set(guesses.map(({ pokemon }) => pokemon.id)), [guesses])
   const makeGuess = async (identifier: string) => {
@@ -64,7 +66,7 @@ function App() {
   return (
     <div className="app-shell">
       <Header language={language} messages={messages} guesses={guesses.length} maxGuesses={MAX_GUESSES} streak={streak}
-        onToggleLanguage={() => setLanguage((current) => current === 'en' ? 'zh' : 'en')} onOpenPokedex={() => setPokedexOpen(true)} />
+        onToggleLanguage={toggleLanguage} onOpenPokedex={() => setPokedexOpen(true)} />
       <main>
         <section className="game-intro"><span className="eyebrow">{messages.newPokemon}</span><h1>{messages.title}</h1><p>{messages.instructions}</p>
           <SearchBox pokemon={pokemonList} guessedIds={guessedIds} disabled={status !== 'playing'} isSubmitting={isSubmitting}
@@ -78,7 +80,7 @@ function App() {
       <footer><span className="mini-ball" /> {messages.data}</footer>
       {(status === 'won' || status === 'lost') && secret && <VictoryModal pokemon={secret} guesses={guesses.length} won={status === 'won'} language={language} messages={messages} onPlayAgain={() => void startGame(pokemonList)} />}
       <PokedexDrawer open={pokedexOpen} language={language} messages={messages} canGuess={status === 'playing'} guessedIds={guessedIds}
-        onClose={() => setPokedexOpen(false)} onToggleLanguage={() => setLanguage((current) => current === 'en' ? 'zh' : 'en')}
+        onClose={() => setPokedexOpen(false)} onToggleLanguage={toggleLanguage}
         onUseAsGuess={(identifier) => { void makeGuess(identifier) }} />
     </div>
   )

@@ -1,6 +1,6 @@
 import type { CategoricalComparison, ComparisonDirection, GuessResult, Language, NumericComparison, StatKey } from '../types/pokemon'
 import type { Messages } from '../i18n'
-import { generationLabel, localName, translatedCategory, translatedType } from '../i18n'
+import { generationLabel, localName, secondaryName, translatedCategory, translatedType } from '../i18n'
 import { directionSymbol, statKeys } from '../game/comparePokemon'
 
 function Direction({ direction, messages }: { direction: ComparisonDirection; messages: Messages }) {
@@ -30,7 +30,7 @@ function GuessCard({ result, language, messages }: { result: GuessResult; langua
         <span className="card-number">#{String(pokemon.id).padStart(4, '0')}</span>
         <img src={pokemon.artwork} alt={localName(pokemon.names, language)} />
         <h3>{localName(pokemon.names, language)}</h3>
-        <small>{language === 'zh' ? pokemon.names.en : pokemon.names.zh}</small>
+        <small>{secondaryName(pokemon.names, language)}</small>
       </section>
       <Category title={messages.types} className="types-category">
         {comparison.types.map((item) => <CategoryChip key={item.value} label="" comparison={item} messages={messages} display={translatedType(item.value, language)} />)}

@@ -2,7 +2,7 @@ import { getPokemonList } from './pokeApi'
 import type { PokedexEntry } from '../types/pokedex'
 
 const DATA_BASE = 'https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv'
-const CACHE_KEY = 'pokeguess-pokedex-index-v1'
+const CACHE_KEY = 'pokeguess-pokedex-index-v2'
 const POKEMON_COUNT = 1025
 
 const typeIds: Record<number, string> = {

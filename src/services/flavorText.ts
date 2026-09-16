@@ -38,10 +38,15 @@ export function selectOfficialDescriptions(entries: FlavorTextEntry[]): PokemonD
   const traditionalChinese = selectFlavorText(entries, 'zh-hant')
   const generalChinese = selectFlavorText(entries, 'zh')
   const officialChinese = simplifiedChinese ?? traditionalChinese ?? generalChinese
+  const standardJapanese = selectFlavorText(entries, 'ja')
+  const kanaJapanese = selectFlavorText(entries, 'ja-hrkt')
+  const officialJapanese = standardJapanese ?? kanaJapanese
 
   return {
     en,
     zh: officialChinese ?? en,
+    ja: officialJapanese ?? en,
     zhUsesEnglishFallback: !officialChinese && Boolean(en),
+    jaUsesEnglishFallback: !officialJapanese && Boolean(en),
   }
 }

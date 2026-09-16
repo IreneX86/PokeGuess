@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import type { Language, PokemonGameData, StatKey } from '../../types/pokemon'
 import type { PokedexEntry } from '../../types/pokedex'
 import type { Messages } from '../../i18n'
-import { generationLabel, localName, translatedCategory } from '../../i18n'
+import { generationLabel, localName, secondaryName, translatedCategory } from '../../i18n'
 import { getPokemon } from '../../services/pokeApi'
 import { statKeys } from '../../game/comparePokemon'
 import { TypeBadge } from './TypeBadge'
@@ -18,16 +18,17 @@ export function PokemonDetail({ entry, language, messages, canGuess, alreadyGues
     return () => { cancelled = true }
   }, [entry.identifier])
   const statLabels: Record<StatKey, string> = { hp: messages.hp, attack: messages.attack, defense: messages.defense, specialAttack: messages.specialAttack, specialDefense: messages.specialDefense, speed: messages.speed }
+  const descriptionUsesEnglishFallback = pokemon && ((language === 'zh' && pokemon.description.zhUsesEnglishFallback) || (language === 'ja' && pokemon.description.jaUsesEnglishFallback))
   return (
     <div className="pokedex-detail">
       <button className="detail-back" onClick={onBack}>← {messages.backToPokedex}</button>
       {failed && <div className="drawer-state error"><p>{messages.detailError}</p><button onClick={onBack}>{messages.backToPokedex}</button></div>}
       {!failed && !pokemon && <div className="drawer-state"><span className="spinner" /><p>{messages.detailLoading}</p></div>}
       {pokemon && <>
-        <div className="detail-hero"><span>#{String(pokemon.id).padStart(4, '0')}</span><img src={pokemon.artwork} alt={localName(pokemon.names, language)} /><h2>{localName(pokemon.names, language)}</h2>{language === 'zh' && <p>{pokemon.names.en}</p>}<div>{pokemon.types.map((type) => <TypeBadge key={type} type={type} language={language} />)}</div></div>
+        <div className="detail-hero"><span>#{String(pokemon.id).padStart(4, '0')}</span><img src={pokemon.artwork} alt={localName(pokemon.names, language)} /><h2>{localName(pokemon.names, language)}</h2>{language !== 'en' && <p>{secondaryName(pokemon.names, language)}</p>}<div>{pokemon.types.map((type) => <TypeBadge key={type} type={type} language={language} />)}</div></div>
         <div className="detail-facts"><section><h3>{messages.generation}</h3><strong>{generationLabel(pokemon.generation, language)}</strong></section><section><h3>{messages.height}</h3><strong>{(pokemon.height / 10).toFixed(1)} m</strong></section><section><h3>{messages.weight}</h3><strong>{(pokemon.weight / 10).toFixed(1)} kg</strong></section></div>
         <section className="detail-section description-section"><h3>{messages.description}</h3>
-          {language === 'zh' && pokemon.description.zhUsesEnglishFallback && <small className="description-fallback">{messages.descriptionEnglishFallback}</small>}
+          {descriptionUsesEnglishFallback && <small className="description-fallback">{messages.descriptionEnglishFallback}</small>}
           <p>{pokemon.description[language] ?? messages.unknown}</p>
           <div className="description-facts">
             <span><small>{messages.color}</small><strong>{pokemon.color ? translatedCategory(pokemon.color, language) : messages.unknown}</strong></span>

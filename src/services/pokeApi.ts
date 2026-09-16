@@ -4,7 +4,7 @@ import type { FlavorTextEntry } from './flavorText'
 
 const API_BASE = 'https://pokeapi.co/api/v2'
 const POKEMON_COUNT = 1025
-const INDEX_CACHE_KEY = 'pokeguess-search-index-v2'
+const INDEX_CACHE_KEY = 'pokeguess-search-index-v3'
 const NAME_CSV = 'https://raw.githubusercontent.com/PokeAPI/pokeapi/master/data/v2/csv/pokemon_species_names.csv'
 const SPRITE_BASE = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon'
 
@@ -41,8 +41,13 @@ function englishFallback(identifier: string): string {
   return identifier.split('-').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(' ')
 }
 function localizedNames(names: LocalizedName[], fallback: string): LocalizedText {
-  const find = (language: string) => names.find((item) => item.language.name === language)?.name
-  return { en: find('en') ?? englishFallback(fallback), zh: find('zh-hans') ?? find('zh-hant') ?? find('en') ?? englishFallback(fallback) }
+  const find = (language: string) => names.find((item) => item.language.name.toLowerCase() === language.toLowerCase())?.name
+  const en = find('en') ?? englishFallback(fallback)
+  return {
+    en,
+    zh: find('zh-hans') ?? find('zh-hant') ?? en,
+    ja: find('ja-hrkt') ?? find('ja') ?? en,
+  }
 }
 function parseCsvRow(row: string): string[] {
   const fields: string[] = []
@@ -66,13 +71,18 @@ async function getBulkNames(): Promise<Map<number, LocalizedText>> {
     if (!row) continue
     const [speciesIdText, languageId, name] = parseCsvRow(row)
     const speciesId = Number(speciesIdText)
-    if (speciesId > POKEMON_COUNT || (languageId !== '9' && languageId !== '12')) continue
+    if (speciesId > POKEMON_COUNT || !['1', '9', '11', '12'].includes(languageId)) continue
     const current = entries.get(speciesId) ?? {}
     if (languageId === '9') current.en = name
     if (languageId === '12') current.zh = name
+    if (languageId === '1' || (languageId === '11' && !current.ja)) current.ja = name
     entries.set(speciesId, current)
   }
-  return new Map([...entries].map(([id, names]) => [id, { en: names.en ?? '', zh: names.zh ?? names.en ?? '' }]))
+  return new Map([...entries].map(([id, names]) => [id, {
+    en: names.en ?? '',
+    zh: names.zh ?? names.en ?? '',
+    ja: names.ja ?? names.en ?? '',
+  }]))
 }
 
 export function spriteForId(id: number): string { return `${SPRITE_BASE}/${id}.png` }
@@ -90,8 +100,9 @@ export async function getPokemonList(): Promise<PokemonListItem[]> {
     ])
     const list = data.results.map(({ name: identifier, url }) => {
       const id = idFromUrl(url)
-      const names = bulkNames.get(id) ?? { en: englishFallback(identifier), zh: englishFallback(identifier) }
-      return { id, identifier, names, sprite: spriteForId(id), searchTerms: [identifier, names.en.toLowerCase(), names.zh] }
+      const fallback = englishFallback(identifier)
+      const names = bulkNames.get(id) ?? { en: fallback, zh: fallback, ja: fallback }
+      return { id, identifier, names, sprite: spriteForId(id), searchTerms: [identifier, names.en.toLowerCase(), names.zh, names.ja] }
     })
     try { localStorage.setItem(INDEX_CACHE_KEY, JSON.stringify(list)) } catch { /* Cache is optional. */ }
     return list

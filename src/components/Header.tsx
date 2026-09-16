@@ -7,9 +7,10 @@ export function Header({ language, messages, guesses, maxGuesses, streak, onTogg
   return (
     <header className="hero">
       <button className="pokedex-open" onClick={onOpenPokedex}>📖 {messages.openPokedex}</button>
-      <button className="language-toggle" onClick={onToggleLanguage} aria-label={language === 'en' ? '切换到中文' : 'Switch to English'}>
+      <button className="language-toggle" onClick={onToggleLanguage} aria-label={messages.switchLanguage}>
+        <span className={language === 'en' ? 'active' : ''}>English</span><i />
         <span className={language === 'zh' ? 'active' : ''}>中文</span><i />
-        <span className={language === 'en' ? 'active' : ''}>English</span>
+        <span className={language === 'ja' ? 'active' : ''}>日本語</span>
       </button>
       <div className="brand" aria-label="PokéGuess"><span>Poké</span><span>Guess</span></div>
       <p className="tagline">{messages.tagline}</p>

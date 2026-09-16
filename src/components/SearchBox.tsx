@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { Language, PokemonListItem } from '../types/pokemon'
 import type { Messages } from '../i18n'
-import { localName } from '../i18n'
+import { localName, secondaryName } from '../i18n'
 
 interface SearchBoxProps {
   pokemon: PokemonListItem[]; guessedIds: Set<number>; disabled: boolean; isSubmitting: boolean
@@ -52,7 +52,7 @@ export function SearchBox({ pokemon, guessedIds, disabled, isSubmitting, languag
           {suggestions.length ? suggestions.map((item, index) => (
             <li key={item.id}><button className={index === activeIndex ? 'active' : ''} onMouseDown={(event) => event.preventDefault()}
               onClick={() => select(item)} role="option" aria-selected={index === activeIndex}>
-              <img src={item.sprite} alt="" /><span>{localName(item.names, language)}<em>{language === 'zh' ? item.names.en : item.names.zh}</em></span>
+              <img src={item.sprite} alt="" /><span>{localName(item.names, language)}<em>{secondaryName(item.names, language)}</em></span>
               <small>#{String(item.id).padStart(4, '0')}</small>
             </button></li>
           )) : <li className="no-results">{messages.noResults}</li>}
